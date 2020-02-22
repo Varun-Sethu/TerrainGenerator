@@ -8,7 +8,7 @@ A Cmake script is provided for generating build scripts, for linux usage is simp
 ```bash
 hello@x ~ mkdir -p bin && cd bin
 hello@x ~ cmake ..
-hello@x  make && ./terrain
+hello@x ~ make && ./terrain
 ```
 Ensure that before compiling SFML is already installed on your machine.
 
