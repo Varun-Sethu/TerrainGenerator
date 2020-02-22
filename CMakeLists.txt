@@ -24,6 +24,7 @@ set(SRC_FILES
     "main.cpp"
     "include/map.h"
     "include/perlin.h"
+    "include/biomes.h"
 )
 
 

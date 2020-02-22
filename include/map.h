@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <string>
+#include "biomes.h"
 
 class Map : public sf::Drawable, public sf::Transformable {
 
@@ -10,7 +11,7 @@ public:
 
 
     // Loads a specific texture set and generates a map
-    bool load(const std::string& tilesetLocation, sf::Vector2u tileSize, sf::Vector2u mapDimensions, const int* data) {
+    bool load(std::string tilesetLocation, sf::Vector2u tileSize, sf::Vector2u mapDimensions, const float* data) {
         // Load the tileset
         if (!__tilest.loadFromFile(tilesetLocation)) return false;
 
@@ -23,7 +24,7 @@ public:
         for (int i = 0; i < mapDimensions.x; ++i) {
             for (int j = 0; j < mapDimensions.y; ++j) {
                 // Determine the provided texture value of the tile we are computing
-                int texture = data[i + j*mapDimensions.x];
+                float texture = (float) determineBiome(data[i + j*mapDimensions.x]);
                 sf::Vertex* cell = &__verticies[(i + j*mapDimensions.x) * 4];
 
                 // Set the relative positions of this vertex
@@ -31,10 +32,9 @@ public:
                 cell[1].position = sf::Vector2f((i + 1) * tileSize.x, j * tileSize.y);
                 cell[2].position = sf::Vector2f((i + 1) * tileSize.x, (j + 1) * tileSize.y);
                 cell[3].position = sf::Vector2f(i * tileSize.x, (j + 1) * tileSize.y);
-
                 // The function assumes that when texturing, the height of a tile = the width of a file and thus the height of the tileset
                 int textureDim = __tilest.getSize().y;
-                
+
                 // Set the textures
                 cell[0].texCoords = sf::Vector2f(texture * textureDim, 0);
                 cell[1].texCoords = sf::Vector2f((texture + 1) * textureDim, 0);
@@ -44,6 +44,7 @@ public:
         }
         return true;
     }
+
 
 private:
 
